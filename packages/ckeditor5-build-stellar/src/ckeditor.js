@@ -59,8 +59,7 @@ ClassicEditor.defaultConfig = {
 			'bulletedList',
 			'numberedList',
 			'|',
-			'uploadImage',
-			'insertTable',
+			'uploadImage'
 		]
 	},
 	image: {
@@ -70,7 +69,7 @@ ClassicEditor.defaultConfig = {
 			'imageStyle:side',
 			'|',
 			'toggleImageCaption',
-			'imageTextAlternative',
+			'imageTextAlternative'
 		]
 	},
 	// This value must be kept in sync with the language defined in webpack.config.js.
