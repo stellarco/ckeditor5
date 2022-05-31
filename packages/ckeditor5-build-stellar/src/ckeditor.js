@@ -24,10 +24,17 @@ import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefrom
 import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformation';
 import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
 
-export default class ClassicEditor extends ClassicEditorBase {}
+// Auxiliary imports
+import UpcastWriter from '@ckeditor/ckeditor5-engine/src/view/upcastwriter';
+
+export default class StellarEditor extends ClassicEditorBase {
+	createUpcastWriter() {
+		return new UpcastWriter(this.editing.view.document);
+	}
+}
 
 // Plugins to include in the build.
-ClassicEditor.builtinPlugins = [
+StellarEditor.builtinPlugins = [
 	Essentials,
 	Autoformat,
 	Bold,
@@ -48,7 +55,7 @@ ClassicEditor.builtinPlugins = [
 ];
 
 // Editor configuration.
-ClassicEditor.defaultConfig = {
+StellarEditor.defaultConfig = {
 	toolbar: {
 		items: [
 			'heading',
