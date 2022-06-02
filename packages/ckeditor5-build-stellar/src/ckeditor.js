@@ -24,13 +24,93 @@ import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice';
 import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformation';
 import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
+import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
 
 // Auxiliary imports
 import UpcastWriter from '@ckeditor/ckeditor5-engine/src/view/upcastwriter';
 
 export default class StellarEditor extends ClassicEditorBase {
-	createUpcastWriter() {
-		return new UpcastWriter(this.editing.view.document);
+	constructor( sourceElementOrData, config ) {
+		super( sourceElementOrData, config );
+
+		if (config.enableAutomaticLinkPasting) {
+			this.on('ready', () => {
+				this.setupAutomaticLinkPasting();
+			});
+		}
+
+		if (config.iframely) {
+			this.enableIframely( config.iframely.apiKey );
+		}
+	}
+
+	setupAutomaticLinkPasting() {
+		const writer = new UpcastWriter( this.editing.view.document );
+
+		this.plugins.get( 'ClipboardPipeline' ).on( 'inputTransformation', ( evt, data ) => {
+			const selection = this.model.document.selection;
+			const range = selection.getFirstRange();
+			let linkText;
+
+			for (const item of range.getItems()) {
+				linkText = item.data;
+				break;
+			}
+
+			let isTextUrl = false;
+
+			try {
+				new URL( data.content.getChild( 0 ).data );
+				isTextUrl = true;
+			} catch (_) {
+			}
+
+			if (linkText && data.content.childCount === 1 && isTextUrl) {
+				const linkUrl = data.content.getChild( 0 ).data;
+
+				data.content = writer.createDocumentFragment( [
+					writer.createElement(
+						'a',
+						{ href: linkUrl },
+						[ writer.createText( linkText ) ]
+					)
+				] );
+			}
+		} );
+	}
+
+	enableIframely(iframelyApiKey) {
+		const IFRAME_SRC = '//cdn.iframe.ly/api/iframe';
+
+		this.config.set( 'mediaEmbed.previewsInData', false );
+		this.config.set( 'mediaEmbed.providers', [
+			{
+				// hint: this is just for previews. Get actual HTML codes by making API calls from your CMS
+				name: 'iframely previews',
+
+				// Match all URLs or just the ones you need:
+				url: /.+/,
+
+				html: match => {
+					const url = match[0];
+
+					var iframeUrl = IFRAME_SRC + '?app=1&api_key=' + iframelyApiKey + '&url=' + encodeURIComponent( url );
+					// alternatively, use &key= instead of &api_key with the MD5 hash of your api_key
+					// more about it: https://iframely.com/docs/allow-origins
+
+					return (
+						// If you need, set maxwidth and other styles for 'iframely-embed' class - it's yours to customize
+						'<div class="iframely-embed">' +
+						'<div class="iframely-responsive">' +
+						`<iframe src="${ iframeUrl }" ` +
+						'frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>' +
+						'</iframe>' +
+						'</div>' +
+						'</div>'
+					);
+				}
+			}
+		] );
 	}
 }
 
@@ -53,7 +133,8 @@ StellarEditor.builtinPlugins = [
 	Paragraph,
 	PasteFromOffice,
 	TextTransformation,
-	CodeBlock
+	CodeBlock,
+	MediaEmbed
 ];
 
 // Editor configuration.

@@ -1,6 +1,6 @@
 {
   "name": "@stratuslabs/ckeditor5-build-stellar",
-  "version": "34.1.2",
+  "version": "34.1.3",
   "description": "Custom build of CKEditor 5 for Stellar project",
   "keywords": [
     "ckeditor5-build",
@@ -36,6 +36,7 @@
     "@ckeditor/ckeditor5-image": "^34.1.0",
     "@ckeditor/ckeditor5-link": "^34.1.0",
     "@ckeditor/ckeditor5-list": "^34.1.0",
+    "@ckeditor/ckeditor5-media-embed": "^34.1.0",
     "@ckeditor/ckeditor5-paragraph": "^34.1.0",
     "@ckeditor/ckeditor5-paste-from-office": "^34.1.0",
     "@ckeditor/ckeditor5-typing": "^34.1.0"
