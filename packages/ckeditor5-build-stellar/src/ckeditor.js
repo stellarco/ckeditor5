@@ -34,9 +34,9 @@ export default class StellarEditor extends ClassicEditorBase {
 		super( sourceElementOrData, config );
 
 		if (config.enableAutomaticLinkPasting) {
-			this.on('ready', () => {
+			this.on( 'ready', () => {
 				this.setupAutomaticLinkPasting();
-			});
+			} );
 		}
 
 		if (config.iframely) {
@@ -79,7 +79,11 @@ export default class StellarEditor extends ClassicEditorBase {
 		} );
 	}
 
-	enableIframely(iframelyApiKey) {
+	enableIframely( iframelyApiKey ) {
+		const scriptEl = document.createElement( 'script' );
+		scriptEl.src = '//cdn.iframe.ly/embed.js?cancel=0';
+		document.body.appendChild( scriptEl );
+
 		const IFRAME_SRC = '//cdn.iframe.ly/api/iframe';
 
 		this.config.set( 'mediaEmbed.previewsInData', false );
@@ -93,13 +97,9 @@ export default class StellarEditor extends ClassicEditorBase {
 
 				html: match => {
 					const url = match[0];
-
-					var iframeUrl = IFRAME_SRC + '?app=1&api_key=' + iframelyApiKey + '&url=' + encodeURIComponent( url );
-					// alternatively, use &key= instead of &api_key with the MD5 hash of your api_key
-					// more about it: https://iframely.com/docs/allow-origins
+					const iframeUrl = IFRAME_SRC + '?app=1&api_key=' + iframelyApiKey + '&url=' + encodeURIComponent( url );
 
 					return (
-						// If you need, set maxwidth and other styles for 'iframely-embed' class - it's yours to customize
 						'<div class="iframely-embed">' +
 						'<div class="iframely-responsive">' +
 						`<iframe src="${ iframeUrl }" ` +
