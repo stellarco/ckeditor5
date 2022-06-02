@@ -1,6 +1,6 @@
 {
   "name": "@stratuslabs/ckeditor5-build-stellar",
-  "version": "34.1.4",
+  "version": "34.1.5",
   "description": "Custom build of CKEditor 5 for Stellar project",
   "keywords": [
     "ckeditor5-build",
