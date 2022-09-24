@@ -38,10 +38,6 @@ export default class StellarEditor extends ClassicEditorBase {
 				this.setupAutomaticLinkPasting();
 			} );
 		}
-
-		if (config.iframely) {
-			this.enableIframely( config.iframely.apiKey );
-		}
 	}
 
 	setupAutomaticLinkPasting() {
@@ -77,40 +73,6 @@ export default class StellarEditor extends ClassicEditorBase {
 				] );
 			}
 		} );
-	}
-
-	enableIframely( iframelyApiKey ) {
-		const scriptEl = document.createElement( 'script' );
-		scriptEl.src = '//cdn.iframe.ly/embed.js?cancel=0';
-		document.body.appendChild( scriptEl );
-
-		const IFRAME_SRC = '//cdn.iframe.ly/api/iframe';
-
-		this.config.set( 'mediaEmbed.previewsInData', false );
-		this.config.set( 'mediaEmbed.providers', [
-			{
-				// hint: this is just for previews. Get actual HTML codes by making API calls from your CMS
-				name: 'iframely previews',
-
-				// Match all URLs or just the ones you need:
-				url: /.+/,
-
-				html: match => {
-					const url = match[0];
-					const iframeUrl = IFRAME_SRC + '?app=1&api_key=' + iframelyApiKey + '&url=' + encodeURIComponent( url );
-
-					return (
-						'<div class="iframely-embed">' +
-						'<div class="iframely-responsive">' +
-						`<iframe src="${ iframeUrl }" ` +
-						'frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>' +
-						'</iframe>' +
-						'</div>' +
-						'</div>'
-					);
-				}
-			}
-		] );
 	}
 }
 
