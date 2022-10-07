@@ -38,6 +38,8 @@ export default class StellarEditor extends ClassicEditorBase {
 				this.setupAutomaticLinkPasting();
 			} );
 		}
+
+		this.setupMediaEmbedExtraProviders();
 	}
 
 	setupAutomaticLinkPasting() {
@@ -73,6 +75,25 @@ export default class StellarEditor extends ClassicEditorBase {
 				] );
 			}
 		} );
+	}
+
+	setupMediaEmbedExtraProviders() {
+		const extraProviders = [
+			this.getWistiaProviderConfig()
+		];
+
+		this.config.set( 'mediaEmbed.extraProviders', extraProviders );
+	}
+
+	getWistiaProviderConfig() {
+		return {
+			name: 'wistia',
+			url: /.+\.wistia\.(com|net)\/(medias|embed)\/.+/,
+			html: match => {
+				const url = match[0];
+				return `<iframe src="${ url }" allow="autoplay; encrypted-media" allowfullscreen style="border: 0; width: 100%"></iframe>`;
+			}
+		};
 	}
 }
 
