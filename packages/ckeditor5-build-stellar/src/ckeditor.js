@@ -148,8 +148,6 @@ StellarEditor.defaultConfig = {
 			'link',
 			'bulletedList',
 			'numberedList',
-			'|',
-			'uploadImage'
 		]
 	},
 	image: {
