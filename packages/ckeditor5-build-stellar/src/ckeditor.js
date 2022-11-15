@@ -78,7 +78,8 @@ export default class StellarEditor extends BalloonEditorBase {
 
 	setupMediaEmbedExtraProviders() {
 		const extraProviders = [
-			this.getWistiaProviderConfig()
+			this.getWistiaProviderConfig(),
+      this.getFigmaProviderConfig()
 		];
 
 		this.config.set( 'mediaEmbed.extraProviders', extraProviders );
@@ -91,6 +92,23 @@ export default class StellarEditor extends BalloonEditorBase {
 			html: match => {
 				const url = match[0];
 				return `<iframe src="${ url }" allow="autoplay; encrypted-media" allowfullscreen style="border: 0; width: 100%"></iframe>`;
+			}
+		};
+	}
+
+  getFigmaProviderConfig() {
+		return {
+			name: 'figma',
+			url: /https:\/\/([\w\.-]+\.)?figma.com\/(file|proto)\/([0-9a-zA-Z]{22,128})(?:\/.*)?$/,
+			html: match => {
+				const url = match[0];
+				return `<iframe
+          height="450"
+          width="800"
+          src="https://www.figma.com/embed?embed_host=stellar&url=\
+              ${url}"
+          allowfullscreen
+        />`;
 			}
 		};
 	}
