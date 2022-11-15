@@ -4,8 +4,7 @@
  */
 
 // The editor creator to use.
-import ClassicEditorBase from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-
+import BalloonEditorBase from '@ckeditor/ckeditor5-editor-balloon/src/ballooneditor';
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
 import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat';
 import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
@@ -29,7 +28,7 @@ import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
 // Auxiliary imports
 import UpcastWriter from '@ckeditor/ckeditor5-engine/src/view/upcastwriter';
 
-export default class StellarEditor extends ClassicEditorBase {
+export default class StellarEditor extends BalloonEditorBase {
 	constructor( sourceElementOrData, config ) {
 		super( sourceElementOrData, config );
 
