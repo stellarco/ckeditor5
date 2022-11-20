@@ -88,10 +88,12 @@ export default class StellarEditor extends BalloonEditorBase {
 	getWistiaProviderConfig() {
 		return {
 			name: 'wistia',
-			url: /.+\.wistia\.(com|net)\/(medias|embed)\/.+/,
+			url: /.+\.wistia\.com\/medias\/(.+)\?.+/,
 			html: match => {
-				const url = match[0];
-				return `<iframe src="${ url }" allow="autoplay; encrypted-media" allowfullscreen style="border: 0; width: 100%"></iframe>`;
+				const videoId = match[1];
+				return `<iframe src="//fast.wistia.net/embed/iframe/${videoId}?videoFoam=true&videoWidth=500" allowtransparency="true" frameborder="0" scrolling="no" class="wistia_embed"
+name="wistia_embed" allowfullscreen mozallowfullscreen webkitallowfullscreen oallowfullscreen msallowfullscreen width="500"></iframe>
+<script src="//fast.wistia.net/assets/external/iframe-api-v1.js"></script>`;
 			}
 		};
 	}
